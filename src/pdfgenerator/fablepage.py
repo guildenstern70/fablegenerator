@@ -1,6 +1,6 @@
 '''
 PDFGenerator
-FablePage.py
+fablepage.py
 
 @author: Alessio Saltarin
 '''
@@ -10,7 +10,7 @@ import stylesheet
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.lib.units import cm
 
 
@@ -24,13 +24,13 @@ def firstPages(canvas, doc):
     canvas.setFont("Calibri", 11)
     canvas.drawCentredString(_W/2, 800, 'FableMe - A fable for your child')
     canvas.setFont('Calibri', 9)
-    canvas.drawCentredString(_W/2, 800, 'http://www.fableme.com')
+    canvas.drawCentredString(_W/2, 50, 'http://www.fableme.com')
     canvas.restoreState()
     
 def laterPages(canvas, doc):
     canvas.saveState()
     canvas.setFont('Calibri', 9)
-    canvas.drawString(cm, LEFT_MARGIN, "Page %d %s" % (doc.page, 'FableMe.com'))
+    canvas.drawCentredString(_W/2, 50, '- %d -' % doc.page)
     canvas.restoreState()
 
 class FableDoc():
@@ -46,9 +46,9 @@ class FableDoc():
         self._story.append(p)
         self._story.append(Spacer(1, 2.2*cm))
         
-    def addChapter(self, chapter_number, chapter_title):
-        title = chapter_number + '. ' + chapter_title 
-        p = Paragraph(title, self._styles['Chapter'])
+    def addChapter(self, chapter_title):
+        p = Paragraph(chapter_title, self._styles['Chapter'])
+        self._story.append(PageBreak())
         self._story.append(p)
         self._story.append(Spacer(1, 0.2*cm))
         

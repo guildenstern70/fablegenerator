@@ -1,6 +1,6 @@
 '''
 PDFGenerator
-FablePage.py
+stylesheet.py
 
 @author: Alessio Saltarin
 '''
@@ -30,8 +30,11 @@ def fableMeStyleSheet():
 
     stylesheet.add(ParagraphStyle(name='Normal',
                                   fontName=_baseFontName,
-                                  fontSize=10,
-                                  leading=12)
+                                  firstLineIndent=5,
+                                  fontSize=14,
+                                  leading=16,
+                                  spaceBefore=4,
+                                  spaceAfter=4)
                    )
 
     stylesheet.add(ParagraphStyle(name='BodyText',
@@ -46,7 +49,7 @@ def fableMeStyleSheet():
     stylesheet.add(ParagraphStyle(name='Title',
                                   parent=stylesheet['Normal'],
                                   fontName = _baseFontNameB,
-                                  fontSize=18,
+                                  fontSize=22,
                                   leading=22,
                                   alignment=TA_CENTER,
                                   spaceAfter=6),
@@ -55,7 +58,7 @@ def fableMeStyleSheet():
     stylesheet.add(ParagraphStyle(name='Chapter',
                                   parent=stylesheet['Normal'],
                                   fontName = _baseFontNameI,
-                                  fontSize=14,
+                                  fontSize=18,
                                   leading=18,
                                   spaceBefore=12,
                                   spaceAfter=6,
