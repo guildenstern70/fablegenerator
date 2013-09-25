@@ -24,12 +24,14 @@ class FableLoader():
     def __init__(self, filename, title):
         self._filename = filename
         self._title = title
-        self.fable = fablepage.FableDoc(output_path('hello.pdf'))
+        self.pdffilepath = output_path(os.path.splitext(filename)[0] + '.pdf')
+        self.fable = fablepage.FableDoc(self.pdffilepath)
         self.chapters = []
         
     def build(self):
         if (self._readFile()):
             self._parseFile()
+            self._addCover()
             self.fable.addTitle(self._title)
             for chapter in self.chapters:
                 self._buildChapter(self.fable, chapter)
@@ -66,25 +68,34 @@ class FableLoader():
                     chapter_paragraphs = []
             chapter_paragraphs.append(paragraph)       
         print '  Done.'
+        
+    def _addCover(self):
+        print '  Adding cover'
+        self.fable.addCover(resource_path('picture1.png'))
                 
     def _addChapter(self, paragraphs):
         """ Add a chapter to chapters list """
         new_chapter = chapter.FableChapter()
         new_chapter.title = paragraphs[0]
-        print '  Adding chapter > ' + new_chapter.title
         for i in range(1,len(paragraphs)):
             new_chapter.addParagraph(paragraphs[i])
         self.chapters.append(new_chapter)
             
     def _buildChapter(self, fable, chapter):
-        fable.addChapter(chapter.title)
+        print '  Adding chapter > ' + chapter.title
+        fable.addChapterTitle(chapter.title)
         for paragraph in chapter.paragraphs:
-            fable.addParagraph(paragraph)
+            fable.addParagraphOrImage(paragraph)
+        fable.addPageBreak()
                 
     def __get_fable(self):
         return self.fable
+    
+    def __get_pdffile(self):
+        return self.pdffilepath
         
     fable = property(__get_fable, doc="""Get the fable document.""")
+    fable_file = property(__get_pdffile, doc="""Get the fable file path.""")
         
 
     
