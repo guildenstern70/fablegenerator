@@ -25,7 +25,8 @@ class FableLoader():
         self._filename = filename
         self._title = title
         self.pdffilepath = output_path(os.path.splitext(filename)[0] + '.pdf')
-        self.fable = fablepage.FableDoc(self.pdffilepath)
+        self.coverfilename = os.path.splitext(filename)[0] + '.png' 
+        self.fable = fablepage.FableDoc(self.pdffilepath, title)
         self.chapters = []
         
     def build(self):
@@ -71,7 +72,7 @@ class FableLoader():
         
     def _addCover(self):
         print '  Adding cover'
-        self.fable.addCover(resource_path('picture1.png'))
+        self.fable.addCover(resource_path(self.coverfilename))
                 
     def _addChapter(self, paragraphs):
         """ Add a chapter to chapters list """

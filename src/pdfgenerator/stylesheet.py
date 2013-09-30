@@ -31,8 +31,8 @@ def fableMeStyleSheet():
     stylesheet.add(ParagraphStyle(name='Normal',
                                   fontName=_baseFontName,
                                   firstLineIndent=5,
-                                  fontSize=14,
-                                  leading=16,
+                                  fontSize=16,
+                                  leading=24,
                                   spaceBefore=4,
                                   spaceAfter=4)
                    )
@@ -49,8 +49,8 @@ def fableMeStyleSheet():
     stylesheet.add(ParagraphStyle(name='Title',
                                   parent=stylesheet['Normal'],
                                   fontName = _baseFontNameB,
-                                  fontSize=22,
-                                  leading=22,
+                                  fontSize=26,
+                                  leading=24,
                                   alignment=TA_CENTER,
                                   spaceAfter=6),
                    alias='title')
@@ -61,7 +61,7 @@ def fableMeStyleSheet():
                                   fontSize=18,
                                   leading=18,
                                   spaceBefore=12,
-                                  spaceAfter=6,
+                                  spaceAfter=20,
                                   textColor=darkblue),
                    alias='chapter')
 
