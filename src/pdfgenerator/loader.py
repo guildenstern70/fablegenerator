@@ -48,13 +48,13 @@ class FableLoader(object):
     def _readFile(self):
         """ Transfer file contents into paragraphs list """
         fileReadOk = True
-        print '  Reading file ' + self._filename
+        print '-- Reading file ' + self._filename
         try:
             fileobj = open(resource_path(self._filename), "r")
             filecontents = self._replace_tags(fileobj.read())
             fileobj.close()
             self.paras = filecontents.split('\n')
-            print '  The file has ' + str(len(self.paras)) + ' paragraphs.'
+            print '-- The file has ' + str(len(self.paras)) + ' paragraphs.'
         except IOError:
             print '*** Critical error opening ', self._filename
             print '*** ', sys.exc_info()[0]
