@@ -6,17 +6,23 @@ main.py
 '''
 
 import pdfgenerator.loader as loader
+import os
 import sys
-import os.path
 
-def validate_args(template, sex, name):
+def validate_args(fid, lang, sex, name):
     validate_ok = True
-    if (not os.path.exists(file_full_path)):
-        print 'File %s does not exist.' % template
-        print 'Valid choices are:' 
-        print '  When_I_met_the_Pirates.txt' 
-        print '  The_talisman_of_the_Badia.txt' 
-        print '  My_voyage_to_Aragon.txt' 
+    try:
+        fable_id = int(fid)
+    except:
+        print 'Invalid fable id %s' % fid
+        return False
+    if (fable_id <0 or fable_id > 2):
+        print 'Invalid fable id %s' % fid
+        print 'Valid choices are: 0-1-2' 
+        print
+        validate_ok = False
+    elif (lang != 'EN' and lang != 'IT' and lang != 'RO'):
+        print 'Unknown lang %s' % lang
         validate_ok = False
     elif (sex != 'M' and sex != 'F'):
         print 'Invalid sex param. Valid choices are M or F.'
@@ -28,45 +34,49 @@ def validate_args(template, sex, name):
     
 if __name__ == '__main__':
     print """
-PDF Generator v.0.5
-by Alessio Saltarin (2013)
+PDF Generator v.0.8
+(C) 2013 Alessio Saltarin
     """
     
-    if len(sys.argv) != 4:
-        print """ 
-        
+    if len(sys.argv) != 5:
+        print """        
 Usage:
 
-python pdfgenerator.py [fable_text_file] [sex: M or F] [name of the character]
+  python pdfgenerator.py [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character]
+  
+  Fable IDs:
+      0 - When I met the Pirates
+      1 - My voyage to Aragon
+      2 - The talisman of the Badia
 
 Example:
 
-python pdfgenerator.py My_voyage_to_Aragon.txt F Anna
+  python pdfgenerator.py 1 F Anna
         
         """
         sys.exit(0)
     
-    template = sys.argv[1]
-    tsex = sys.argv[2]
-    tname = sys.argv[3]
+    fable_id = sys.argv[1]
+    tlang = sys.argv[2]
+    tsex = sys.argv[3]
+    tname = sys.argv[4]
     
-    file_full_path = loader.resource_path(template)
-
-    if (validate_args(template, tsex, tname)):
-        print '-- Parsing %s...' % template
-        print '-- Generating canvas...'
-        fabledoc = loader.FableLoader(filename = template, sex=tsex, name = tname)
+    if (validate_args(fable_id, tlang, tsex, tname)):
+        print '-- Running in %s' % os.getcwd()
+        print '-- Generating Fable #%s...' % fable_id
+        fabledoc = loader.FableLoader(fable_id, tlang, tsex, tname)
         fabledoc.build()
         print '-- Done.'
         print '-- Saving PDF to ' + fabledoc.fable_file
         print '-- Please wait...'
         try:
-            fabledoc.save()
-            print '-- PDF successfully saved'
+            if fabledoc.save():
+                print '-- PDF successfully saved'
         except IOError:
             print '** ERROR: Cannot write file. In use by another process?'
         print
         print 'All done. Bye.'
     else:
+        print
         print 'Bye.'
     
