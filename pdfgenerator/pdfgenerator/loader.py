@@ -13,8 +13,8 @@ import chapter
 import tagreplacer
 import languages
 
-OUTPUT_DIR = "../output/"
-RESOURCES_DIR = "../resources/"
+OUTPUT_DIR = "output/"
+RESOURCES_DIR = "resources/"
         
 def output_path(name):
     return os.path.join(OUTPUT_DIR, name)
