@@ -77,7 +77,7 @@ Example:
     if (validate_args(fable_id, tlang, tsex, tname, tbirth)):
         print '-- Running in %s' % os.getcwd()
         print '-- Generating Fable #%s...' % fable_id
-        character = character.Character(tsex, tname, tbirth)
+        character = character.Character(tname, tsex, tbirth)
         fabledoc = loader.FableLoader(fable_id, tlang, character)
         fabledoc.build()
         print '-- Done.'

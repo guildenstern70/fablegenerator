@@ -91,6 +91,5 @@ class Replacer(object):
             ret_val = to_card(self.character_age)
         elif (elem == 'ageord'):
             ret_val = to_ord(self.character_age)
-            print 'Age ord = ' + ret_val
         return ret_val
     

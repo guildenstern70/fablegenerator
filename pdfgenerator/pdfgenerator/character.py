@@ -17,7 +17,6 @@ class Character(object):
             birthday = born.replace(year=today.year)
         except ValueError: # raised when birth date is February 29 and the current year is not a leap year
             birthday = born.replace(year=today.year, day=born.day-1)
-            print 'birthday is '+str(birthday)
         if birthday > today:
             return today.year - born.year - 1
         else:
