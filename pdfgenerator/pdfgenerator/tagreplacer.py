@@ -7,6 +7,8 @@
  
 """
 
+from numtoword.num2word_EN import to_card, to_ord, to_ordnum
+
 known_tags = ['<i>', '</i>', '<b>', 
               '</b>', '<bi>', '</bi>', '<para>', '</para>', '<br/>']
 
@@ -15,10 +17,11 @@ class Replacer(object):
     Logic to replace tags to actual word in template
     '''
 
-    def __init__(self, template, sex, name):
+    def __init__(self, template, character):
         self.fable_template = template
-        self.character_sex = sex
-        self.character_name = name
+        self.character_sex = character.sex
+        self.character_name = character.name
+        self.character_age = character.age
         
     def get_replacements(self):
         ''' Return a dictionary: <tag>: replacement word '''
@@ -75,12 +78,19 @@ class Replacer(object):
         return to_be_replaced
     
     def _element_translate(self, elem):
-        ''' Tag Element: if tag is <his_her>, there are two elements inside: his and her.
-            A tag <name> contains the element name.
+        ''' Elem is a tag containing a word (M,F substitution has been already done).
+            If tag contains <name> return the character's name.
+            If tag contains <age> returns the character's age (in letters, ie: six)
+            If tag containg <age_ord> returns the character's age in ordinal (in letters, ie: sixth)
             This procedure analyzes the tag element and it translates it if it matches certain pre-defined
             keys, such as: name '''
         ret_val = elem
         if (elem == 'name'):
             ret_val = self.character_name
+        elif (elem == 'age'):
+            ret_val = to_card(self.character_age)
+        elif (elem == 'ageord'):
+            ret_val = to_ord(self.character_age)
+            print 'Age ord = ' + ret_val
         return ret_val
     

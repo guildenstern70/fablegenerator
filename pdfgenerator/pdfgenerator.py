@@ -6,10 +6,12 @@ main.py
 '''
 
 import pdfgenerator.loader as loader
+import pdfgenerator.character as character
 import os
 import sys
+import time
 
-def validate_args(fid, lang, sex, name):
+def validate_args(fid, lang, sex, name, birthdate):
     validate_ok = True
     try:
         fable_id = int(fid)
@@ -30,6 +32,16 @@ def validate_args(fid, lang, sex, name):
     elif (name is None or len(name)<=1):
         print 'Invalid name.'
         validate_ok = False
+    elif (len(birthdate) != 9):
+        print 'Invalid birthdate. Must be 9 characters, ie: 26-Aug-80'
+        validate_ok = False
+        
+    try:
+        time.strptime(birthdate, "%d-%b-%y")
+    except:
+        print 'Cannot parse birthdate. Invalid format? Must be dd-mmm-yy'
+        validate_ok = False
+        
     return validate_ok
     
 if __name__ == '__main__':
@@ -38,11 +50,11 @@ PDF Generator v.0.8
 (C) 2013 Alessio Saltarin
     """
     
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 6:
         print """        
 Usage:
 
-  python pdfgenerator.py [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character]
+  python pdfgenerator.py [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character] [birthdate]
   
   Fable IDs:
       0 - When I met the Pirates
@@ -51,7 +63,7 @@ Usage:
 
 Example:
 
-  python pdfgenerator.py 1 F Anna
+  python pdfgenerator.py 1 EN F Anna 30-nov-04
         
         """
         sys.exit(0)
@@ -60,11 +72,13 @@ Example:
     tlang = sys.argv[2]
     tsex = sys.argv[3]
     tname = sys.argv[4]
+    tbirth = sys.argv[5]
     
-    if (validate_args(fable_id, tlang, tsex, tname)):
+    if (validate_args(fable_id, tlang, tsex, tname, tbirth)):
         print '-- Running in %s' % os.getcwd()
         print '-- Generating Fable #%s...' % fable_id
-        fabledoc = loader.FableLoader(fable_id, tlang, tsex, tname)
+        character = character.Character(tsex, tname, tbirth)
+        fabledoc = loader.FableLoader(fable_id, tlang, character)
         fabledoc.build()
         print '-- Done.'
         print '-- Saving PDF to ' + fabledoc.fable_file

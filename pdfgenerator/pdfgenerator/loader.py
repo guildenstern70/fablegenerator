@@ -24,9 +24,9 @@ def resource_path(name):
 
 class FableLoader(object):
     
-    def __init__(self, fable_id, lang, sex, name):
+    def __init__(self, fable_id, lang, character):
         self._fable_id = fable_id
-        self._set_variables(lang, sex, name)
+        self._set_variables(lang, character)
         
     def build(self):
         if self._readFile():
@@ -59,7 +59,7 @@ class FableLoader(object):
         
     def get_images_path_to(self, filename):
         pics_folder = "F_PICS"
-        if (self._sex == 'M'):
+        if (self._character.sex == 'M'):
             pics_folder = "M_PICS"
         images_path = os.path.join(self._get_resources_path(), pics_folder)
         return os.path.join(images_path, filename)
@@ -73,15 +73,14 @@ class FableLoader(object):
             filepath = os.path.join(filepath, lang_code)
         return os.path.normpath(filepath)
         
-    def _set_variables(self, lang, sex, name):
+    def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
         self._pdffile = output_path(self._filename[:-4] + '.pdf')
         self._title = self._template[self._language.get_title_key()]
         print '-- Creating fable = ' + self._title
-        self._sex = sex
-        self._name = name
+        self._character = character
         self.fable_doc = None
         self.chapters = []
                
@@ -93,7 +92,7 @@ class FableLoader(object):
     def _replace_tags(self, filecontents):
         """ Get the final fable as a long string """
         print '-- Replacing tags...'
-        replacer = tagreplacer.Replacer(filecontents, self._sex, self._name)
+        replacer = tagreplacer.Replacer(filecontents, self._character)
         replacements = replacer.get_replacements()
         for tag, val in replacements.items():
             if ((val != None) and (len(val)>0)):
