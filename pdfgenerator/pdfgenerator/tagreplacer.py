@@ -1,7 +1,6 @@
 """ 
  
- FABLE-O-MATIC 
- A LittleLite Web Application
+ PdfGenerator
  
  tagreplacer.py
  
@@ -81,7 +80,7 @@ class Replacer(object):
         ''' Elem is a tag containing a word (M,F substitution has been already done).
             If tag contains <name> return the character's name.
             If tag contains <age> returns the character's age (in letters, ie: six)
-            If tag containg <age_ord> returns the character's age in ordinal (in letters, ie: sixth)
+            If tag containg <ageord> returns the character's age in ordinal (in letters, ie: sixth)
             This procedure analyzes the tag element and it translates it if it matches certain pre-defined
             keys, such as: name '''
         ret_val = elem

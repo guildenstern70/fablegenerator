@@ -43,18 +43,12 @@ def validate_args(fid, lang, sex, name, birthdate):
         validate_ok = False
         
     return validate_ok
-    
-if __name__ == '__main__':
-    print """
-PDF Generator v.0.8
-(C) 2013 Alessio Saltarin
-    """
-    
-    if len(sys.argv) != 6:
-        print """        
+
+def help_me():
+    print """        
 Usage:
 
-  python pdfgenerator.py [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character] [birthdate]
+  pdfgenerator [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character] [birthdate]
   
   Fable IDs:
       0 - When I met the Pirates
@@ -63,11 +57,21 @@ Usage:
 
 Example:
 
-  python pdfgenerator.py 1 EN F Anna 30-nov-04
+  pdfgenerator 1 EN F Anna 30-nov-04
         
         """
-        sys.exit(0)
+    sys.exit(0)
     
+if __name__ == '__main__':
+    
+    print """
+PDF Generator v.0.95
+(C) 2013 FableMe.com
+    """
+    
+    if len(sys.argv) != 6:
+        help_me()
+
     fable_id = sys.argv[1]
     tlang = sys.argv[2]
     tsex = sys.argv[3]

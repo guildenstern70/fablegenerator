@@ -9,6 +9,7 @@ import stylesheet
 import logging
 import fabletemplate
 
+
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Paragraph, Spacer, PageBreak, Image
 from reportlab.lib.units import cm

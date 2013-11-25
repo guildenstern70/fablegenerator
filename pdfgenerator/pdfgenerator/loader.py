@@ -12,16 +12,8 @@ import fables
 import chapter
 import tagreplacer
 import languages
-
-OUTPUT_DIR = "output/"
-RESOURCES_DIR = "resources/"
+import utils
         
-def output_path(name):
-    return os.path.join(OUTPUT_DIR, name)
-
-def resource_path(name):
-    return os.path.join(RESOURCES_DIR, name)
-
 class FableLoader(object):
     
     def __init__(self, fable_id, lang, character):
@@ -65,19 +57,18 @@ class FableLoader(object):
         return os.path.join(images_path, filename)
     
     def _get_resources_path(self):
-        """ Get the relative path to filename, ie: ../resources/My_voyage_to_Aragon/My_voyage_to_Aragon.txt """
         fable_dir = self._template['template_dir']
         lang_code = self._language.language_code()
-        filepath = resource_path(fable_dir)
+        filepath = utils.get_from_relative_resources(fable_dir)
         if (lang_code != "EN"):
-            filepath = os.path.join(filepath, lang_code)
-        return os.path.normpath(filepath)
+            filepath = utils.get_from_relative_resources(filepath, lang_code)
+        return utils.get_google_app_path(filepath)
         
     def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
-        self._pdffile = output_path(self._filename[:-4] + '.pdf')
+        self._pdffile = utils.get_outpath_path(self._filename[:-4] + '.pdf')
         self._title = self._template[self._language.get_title_key()]
         print '-- Creating fable = ' + self._title
         self._character = character
@@ -85,9 +76,7 @@ class FableLoader(object):
         self.chapters = []
                
     def _set_language(self, filename, lang):
-        lang = languages.Language(lang)
-        print '-- Setting language = ' + lang.language()
-        return lang
+        return languages.Language(lang)
 
     def _replace_tags(self, filecontents):
         """ Get the final fable as a long string """
