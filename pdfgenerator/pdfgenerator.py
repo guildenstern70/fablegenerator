@@ -65,7 +65,7 @@ Example:
 if __name__ == '__main__':
     
     print """
-PDF Generator v.0.95
+PDF Generator v.0.96
 (C) 2013 FableMe.com
     """
     
@@ -82,7 +82,7 @@ PDF Generator v.0.95
         print '-- Running in %s' % os.getcwd()
         print '-- Generating Fable #%s...' % fable_id
         character = character.Character(tname, tsex, tbirth)
-        fabledoc = loader.FableLoader(fable_id, tlang, character)
+        fabledoc = loader.SimpleLoader(fable_id, tlang, character)
         fabledoc.build()
         print '-- Done.'
         print '-- Saving PDF to ' + fabledoc.fable_file

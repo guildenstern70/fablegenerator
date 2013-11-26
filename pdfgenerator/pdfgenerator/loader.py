@@ -13,8 +13,9 @@ import chapter
 import tagreplacer
 import languages
 import utils
+import logging
         
-class FableLoader(object):
+class SimpleLoader(object):
     
     def __init__(self, fable_id, lang, character):
         self._fable_id = fable_id
@@ -59,16 +60,16 @@ class FableLoader(object):
     def _get_resources_path(self):
         fable_dir = self._template['template_dir']
         lang_code = self._language.language_code()
-        filepath = utils.get_from_relative_resources(fable_dir)
+        filepath = utils.BasicUtils.get_from_relative_resources(fable_dir)
         if (lang_code != "EN"):
-            filepath = utils.get_from_relative_resources(filepath, lang_code)
-        return utils.get_google_app_path(filepath)
+            filepath = os.path.join(filepath, lang_code)
+        return utils.BasicUtils.get_from_resources(filepath)
         
     def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
-        self._pdffile = utils.get_outpath_path(self._filename[:-4] + '.pdf')
+        self._pdffile = utils.BasicUtils.get_output_path(self._filename[:-4] + '.pdf')
         self._title = self._template[self._language.get_title_key()]
         print '-- Creating fable = ' + self._title
         self._character = character
@@ -79,7 +80,6 @@ class FableLoader(object):
         return languages.Language(lang)
 
     def _replace_tags(self, filecontents):
-        """ Get the final fable as a long string """
         print '-- Replacing tags...'
         replacer = tagreplacer.Replacer(filecontents, self._character)
         replacements = replacer.get_replacements()
@@ -89,7 +89,6 @@ class FableLoader(object):
         return filecontents
     
     def _readFile(self):
-        """ Transfer file contents into paragraphs list """
         fileReadOk = True
         fileFullPath = self.get_resources_path_to(self._filename)
         print '-- Reading file ' + fileFullPath
@@ -106,7 +105,6 @@ class FableLoader(object):
         return fileReadOk
                 
     def _parseFile(self):
-        """ Divide paragraphs in chapters """
         chapter_paragraphs = []
         chapter_nr = 1
         for paragraph in self.paras:
@@ -123,7 +121,6 @@ class FableLoader(object):
         self.fable_doc.addCover(cover_filepath)
                 
     def _addChapter(self, paragraphs):
-        """ Add a chapter to chapters list """
         new_chapter = chapter.FableChapter()
         new_chapter.title = paragraphs[0]
         for i in range(1,len(paragraphs)):
@@ -144,6 +141,49 @@ class FableLoader(object):
         
     fable = property(__get_fable, doc="""Get the fable document.""")
     fable_file = property(__get_pdf_file, doc="""Get fable PDF file path.""")
+    
+    
+class GoogleLoader(SimpleLoader):
+    
+    def save(self, file_h):
+        saved = True
+        try:
+            if (self.fable_doc):
+                self.fable_doc.save(file_h)
+            else:
+                logging.debug('Aborting PDF save: fable_doc is null.')
+                saved = False
+        except:
+            saved = False
+        return saved
+    
+    def get_resources_path_to(self, filename):
+        return utils.GoogleUtils.get_from_resources(filename)
+    
+    def get_images_path_to(self, filename):
+        pics_folder = "F_PICS"
+        if (self._character.sex == 'M'):
+            pics_folder = "M_PICS"
+        image_file = os.path.join(pics_folder, filename)
+        return utils.GoogleUtils.get_from_resources(image_file)
+    
+    def _get_resources_path(self):
+        fable_dir = self._template['template_dir']
+        lang_code = self._language.language_code()
+        filepath = utils.GoogleUtils.get_from_relative_resources(fable_dir)
+        if (lang_code != "EN"):
+            filepath = utils.GoogleUtils.get_from_relative_resources(filepath, lang_code)
+        return utils.GoogleUtils.get_from_resources(filepath)
+    
+    def setContents(self, filecontents):
+        filecontents = self._replace_tags(filecontents)
+        self.paras = filecontents.split('\n')
+        
+
+    
+    
+    
+    
         
 
         
