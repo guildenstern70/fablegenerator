@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 PDFGenerator
 fablepage.py
@@ -8,7 +10,6 @@ fablepage.py
 import stylesheet
 import logging
 import fabletemplate
-
 
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Paragraph, Spacer, PageBreak, Image
@@ -35,6 +36,7 @@ class FableDoc(object):
     
     def __init__(self, fabletitle):
         enc = pdfencrypt.StandardEncryption('', ownerPassword="alessio", canCopy=0, canModify=0)
+        
         self._doc = fabletemplate.FableMeDocTemplate(None, 
                                       title=fabletitle,
                                       pagesize=A4, 

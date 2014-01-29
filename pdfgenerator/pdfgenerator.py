@@ -65,8 +65,8 @@ Example:
 if __name__ == '__main__':
     
     print """
-PDF Generator v.0.96
-(C) 2013 FableMe.com
+PDF Generator v.0.97
+(C) 2013-2014 FableMe.com
     """
     
     if len(sys.argv) != 6:

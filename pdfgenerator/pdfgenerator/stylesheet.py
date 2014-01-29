@@ -9,11 +9,19 @@ from reportlab.lib.styles import StyleSheet1, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.colors import darkblue
 
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+pdfmetrics.registerFont(TTFont('Calibri', 'calibri.ttf'))
+pdfmetrics.registerFont(TTFont('CalibriBold', 'calibrib.ttf'))
+pdfmetrics.registerFont(TTFont('CalibriItalics', 'calibrii.ttf'))
+pdfmetrics.registerFont(TTFont('CalibriBoldItalics', 'calibriz.ttf'))
+
 # Initialization
-_baseFontName = 'Times-Roman'
-_baseFontNameI = 'Times-Italic'
-_baseFontNameB = 'Times-Bold'
-_baseFontNameBI = 'Times-BoldItalic'
+_baseFontName = 'Calibri'
+_baseFontNameI = 'CalibriItalics'
+_baseFontNameB = 'CalibriBold'
+_baseFontNameBI = 'CalibriBoldItalics'
 
 
 def fableMeStyleSheet():

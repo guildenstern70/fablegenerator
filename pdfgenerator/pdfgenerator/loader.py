@@ -6,7 +6,8 @@ loader.py
 '''
 
 import sys
-import os
+import codecs
+import os.path
 import fablepage
 import fables
 import chapter
@@ -54,7 +55,7 @@ class SimpleLoader(object):
         pics_folder = "F_PICS"
         if (self._character.sex == 'M'):
             pics_folder = "M_PICS"
-        images_path = os.path.join(self._get_resources_path(), pics_folder)
+        images_path = os.path.join(self._get_resources_path_lang(), pics_folder)
         return os.path.join(images_path, filename)
     
     def _get_resources_path(self):
@@ -64,12 +65,25 @@ class SimpleLoader(object):
         if (lang_code != "EN"):
             filepath = os.path.join(filepath, lang_code)
         return utils.BasicUtils.get_from_resources(filepath)
+
+    
+    def _get_resources_path_lang(self):
+        fable_dir = self._template['template_dir']
+        lang_code = self._language.language_code()
+        filepath_en = utils.BasicUtils.get_from_relative_resources(fable_dir)
+        fullfilepath = utils.BasicUtils.get_from_resources(filepath_en)
+        if (lang_code != "EN"):
+            filepath_otherlang = os.path.join(filepath_en, lang_code)
+            fullfilepath = utils.BasicUtils.get_from_resources(filepath_otherlang)
+            if (not os.path.isfile(fullfilepath)):
+                fullfilepath = utils.BasicUtils.get_from_resources(filepath_en)
+        return fullfilepath
         
     def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
-        self._pdffile = utils.BasicUtils.get_output_path(self._filename[:-4] + '.pdf')
+        self._pdffile = utils.BasicUtils.get_output_path(self._filename[:-4] + '_' + self._language.language_code() + '.pdf')
         self._title = self._template[self._language.get_title_key()]
         print '-- Creating fable = ' + self._title
         self._character = character
@@ -93,8 +107,9 @@ class SimpleLoader(object):
         fileFullPath = self.get_resources_path_to(self._filename)
         print '-- Reading file ' + fileFullPath
         try:
-            fileobj = open(fileFullPath, "r")
-            filecontents = self._replace_tags(fileobj.read())
+            fileobj = codecs.open(fileFullPath, "r", "utf-8")
+            ufilecontents = unicode(fileobj.read())
+            filecontents = self._replace_tags(ufilecontents)
             fileobj.close()
             self.paras = filecontents.split('\n')
             print '-- The file has ' + str(len(self.paras)) + ' paragraphs.'

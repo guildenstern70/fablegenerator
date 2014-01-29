@@ -1,3 +1,5 @@
+# coding=utf-8
+
 '''
 PDFGenerator
 fables.py
@@ -11,7 +13,7 @@ books = (
             'template_text_file': 'When_I_met_the_Pirates.txt',
             'template_dir': 'When_I_met_the_Pirates',
             'title': 'When I met the Pirates',
-            'title_RO': 'xxxxx',
+            'title_RO': u'Aventuri cu pirații',
             'title_IT': 'Quando incontrai i pirati',
             'sku': 'SKU #83321',
             'languages': 'English, Italian',
@@ -46,7 +48,7 @@ books = (
                 'template_text_file': 'My_voyage_to_Aragon.txt',
                 'template_dir' : 'My_voyage_to_Aragon',
                 'title': 'My voyage to Aragon',
-                'title_RO': 'xxxxx',
+                'title_RO': u'Voiajul meu în Aragon',
                 'title_IT': 'Il mio viaggio ad Aragon',
                 'sku': 'SKU #83203',
                 'languages': 'English',
