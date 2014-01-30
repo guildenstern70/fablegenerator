@@ -55,7 +55,15 @@ class SimpleLoader(object):
         pics_folder = "F_PICS"
         if (self._character.sex == 'M'):
             pics_folder = "M_PICS"
-        images_path = os.path.join(self._get_resources_path_lang(), pics_folder)
+        filepath_en = self._get_resources_path_lang()
+        images_path = os.path.join(filepath_en, pics_folder)
+        lang_code = self._language.language_code()
+        if (lang_code != "EN"):
+            finalpath_otherlang = os.path.normpath(os.path.join(filepath_en, lang_code))
+            fullfilepath = os.path.join(finalpath_otherlang, pics_folder)
+            path_to_file = os.path.join(fullfilepath, filename)
+            if (os.path.isfile(path_to_file)):
+                images_path = fullfilepath
         return os.path.join(images_path, filename)
     
     def _get_resources_path(self):
@@ -66,18 +74,11 @@ class SimpleLoader(object):
             filepath = os.path.join(filepath, lang_code)
         return utils.BasicUtils.get_from_resources(filepath)
 
-    
     def _get_resources_path_lang(self):
         fable_dir = self._template['template_dir']
-        lang_code = self._language.language_code()
         filepath_en = utils.BasicUtils.get_from_relative_resources(fable_dir)
-        fullfilepath = utils.BasicUtils.get_from_resources(filepath_en)
-        if (lang_code != "EN"):
-            filepath_otherlang = os.path.join(filepath_en, lang_code)
-            fullfilepath = utils.BasicUtils.get_from_resources(filepath_otherlang)
-            if (not os.path.isfile(fullfilepath)):
-                fullfilepath = utils.BasicUtils.get_from_resources(filepath_en)
-        return fullfilepath
+        finalpath = os.path.normpath(filepath_en)
+        return finalpath
         
     def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
@@ -85,7 +86,10 @@ class SimpleLoader(object):
         self._filename = self._template['template_text_file']
         self._pdffile = utils.BasicUtils.get_output_path(self._filename[:-4] + '_' + self._language.language_code() + '.pdf')
         self._title = self._template[self._language.get_title_key()]
-        print '-- Creating fable = ' + self._title
+        try:
+            print '-- Creating fable = ' + self._title
+        except:
+            print '-- Creating fable document'
         self._character = character
         self.fable_doc = None
         self.chapters = []

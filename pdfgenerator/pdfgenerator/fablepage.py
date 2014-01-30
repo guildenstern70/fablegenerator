@@ -22,12 +22,12 @@ LEFT_MARGIN = 1.5*cm
 
 def firstPages(canvas, doc):
     canvas.saveState()
-    canvas.setFont('Times-Roman', 9)
+    canvas.setFont('Calibri', 9)
     canvas.restoreState()
     
 def laterPages(canvas, doc):
     canvas.saveState()
-    canvas.setFont('Times-Roman', 9)
+    canvas.setFont('Calibri', 9)
     canvas.drawCentredString(_W/2, 820, 'FableMe - %s' % doc.title)
     canvas.drawCentredString(_W/2, 40, '- %d -' % doc.page)
     canvas.restoreState()

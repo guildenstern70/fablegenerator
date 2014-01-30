@@ -14,7 +14,7 @@ books = (
             'template_dir': 'When_I_met_the_Pirates',
             'title': 'When I met the Pirates',
             'title_RO': u'Aventuri cu pirații',
-            'title_IT': 'Quando incontrai i pirati',
+            'title_IT': 'Avventure coi pirati',
             'sku': 'SKU #83321',
             'languages': 'English, Italian',
             'issuu_id': '8025851/5449283',
