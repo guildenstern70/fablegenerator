@@ -1,18 +1,12 @@
 # coding=utf-8
 
-'''
-PDFGenerator
-fables.py
-
-@author: Alessio Saltarin
-'''
-
 books = (
          {
             'template_id': 0,
             'template_text_file': 'When_I_met_the_Pirates.txt',
             'template_dir': 'When_I_met_the_Pirates',
             'title': 'When I met the Pirates',
+            'title_brief': 'Pirates',
             'title_RO': u'Aventuri cu pirații',
             'title_IT': 'Avventure coi pirati',
             'sku': 'SKU #83321',
@@ -48,6 +42,7 @@ books = (
                 'template_text_file': 'My_voyage_to_Aragon.txt',
                 'template_dir' : 'My_voyage_to_Aragon',
                 'title': 'My voyage to Aragon',
+                'title_brief': 'Aragon',
                 'title_RO': u'Voiajul meu în Aragon',
                 'title_IT': 'Il mio viaggio ad Aragon',
                 'sku': 'SKU #83203',
@@ -87,11 +82,12 @@ books = (
             'template_text_file': 'The_talisman_of_the_Badia.txt',
             'template_dir' : 'The_talisman_of_the_Badia',
             'title': 'The Amazing story of the Badia Talisman',
+            'title_brief': 'Badia',
             'title_RO': 'xxxxx',
             'title_IT': 'La fantastica storia del talismano della Badia',
             'sku': 'SKU #83232',
             'languages': 'English, Italian',
-            'issuu_id': '',
+            'issuu_id': '8868387/6765671',
             'cover_image': 'The_talisman_of_the_Badia.jpg',
             'bookimg_girl': 'cover_badia.jpg',
             'bookimg_boy': 'cover_badia.jpg',
@@ -118,6 +114,42 @@ books = (
         }
     )
 
+
+class Book(object):
+    """ Incapsulates the books dictionary into a class """
+    
+    def __init__(self, book_id):
+        self.dictionary = books[book_id]
+        for k, v in self.dictionary.items():
+            setattr(self, k, v)
+ 
+    def recommendation(self, sexonly=False):
+        recomm = "Recommended for "
+        age_min = self.dictionary['age_recomm_min']
+        age_max = self.dictionary['age_recomm_max']
+        sex_recomm = self.dictionary['sex_recomm']
+        if (sex_recomm == 'M'):
+            recomm += " boys"
+        elif (sex_recomm == 'F'):
+            recomm += " girls"
+        else:
+            recomm += " boys and girls"
+        if (not sexonly):
+            recomm += " aged "
+            recomm += str(age_min)
+            recomm += "-"
+            recomm += str(age_max)
+            recomm += " years"
+        recomm +="."
+        return recomm
+    
+    
+def get_all_books():
+    books_collection = []
+    for i in range(0, len(books)):
+        books_collection.append(Book(i))
+    return books_collection
+
 def get_book_template(book_id):
     """
         # Book 0 -> Peter and the Pirates
@@ -126,4 +158,3 @@ def get_book_template(book_id):
         
     """ 
     return books[int(book_id)]
-

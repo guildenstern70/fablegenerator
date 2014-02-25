@@ -9,11 +9,11 @@ import sys
 import codecs
 import os.path
 import fablepage
-import fables
+import fableme.db.booktemplates as fables
 import chapter
 import tagreplacer
 import languages
-import utils
+import fableme.utils as utils
 import logging
         
 class SimpleLoader(object):
@@ -22,10 +22,12 @@ class SimpleLoader(object):
         self._fable_id = fable_id
         self._set_variables(lang, character)
         
+    def load_template(self):
+        return self._readFile()
     def build(self):
         if self._readFile():
             if len(self.paras) > 0:
-                self.fable_doc = fablepage.FableDoc(self._title)
+                self.fable_doc = fablepage.FableDoc(self._title, standalone=True)
                 self._parseFile()
                 self._addCover()
                 self.fable_doc.addTitle(self._title)
@@ -72,7 +74,7 @@ class SimpleLoader(object):
         filepath = utils.BasicUtils.get_from_relative_resources(fable_dir)
         if (lang_code != "EN"):
             filepath = os.path.join(filepath, lang_code)
-        return utils.BasicUtils.get_from_resources(filepath)
+        return utils.BasicUtils.normalize_path(filepath)
 
     def _get_resources_path_lang(self):
         fable_dir = self._template['template_dir']
@@ -97,14 +99,15 @@ class SimpleLoader(object):
     def _set_language(self, filename, lang):
         return languages.Language(lang)
 
-    def _replace_tags(self, filecontents):
-        print '-- Replacing tags...'
-        replacer = tagreplacer.Replacer(filecontents, self._character)
+    def _replace_tags(self):
+        template_text = self._fabletemplate
+        replacer = tagreplacer.Replacer(self._fabletemplate, self._character)
         replacements = replacer.get_replacements()
         for tag, val in replacements.items():
             if ((val != None) and (len(val)>0)):
-                filecontents = filecontents.replace(tag, val)
-        return filecontents
+                template_text = template_text.replace(tag, val)
+        self.paras = template_text.split('\n')
+        return template_text
     
     def _readFile(self):
         fileReadOk = True
@@ -112,8 +115,8 @@ class SimpleLoader(object):
         print '-- Reading file ' + fileFullPath
         try:
             fileobj = codecs.open(fileFullPath, "r", "utf-8")
-            ufilecontents = unicode(fileobj.read())
-            filecontents = self._replace_tags(ufilecontents)
+            self._fabletemplate = unicode(fileobj.read())
+            filecontents = self._replace_tags()
             fileobj.close()
             self.paras = filecontents.split('\n')
             print '-- The file has ' + str(len(self.paras)) + ' paragraphs.'
@@ -164,6 +167,30 @@ class SimpleLoader(object):
     
 class GoogleLoader(SimpleLoader):
     
+    @classmethod
+    def from_fable_db(cls, dbfable):
+        fable_template_id = dbfable.template_id
+        lang = dbfable.language
+        character = dbfable.character
+        return cls(fable_template_id, lang, character)
+    
+    def load_template(self):
+        self._read_file_template()
+        return self._replace_tags()        
+    
+    def build(self):
+        if len(self.paras) > 0:
+            self.fable_doc = fablepage.FableDoc(self._title, standalone=False)
+            self._parseFile()
+            self._addCover()
+            self.fable_doc.addTitle(self._title)
+            for chapter in self.chapters:
+                self._buildChapter(self.fable_doc, chapter)
+        else:
+            logging.error('CRITICAL PDF Error: empty contents.')
+            raise
+        self.fable_doc.build()
+    
     def save(self, file_h):
         saved = True
         try:
@@ -177,32 +204,25 @@ class GoogleLoader(SimpleLoader):
         return saved
     
     def get_resources_path_to(self, filename):
-        return utils.GoogleUtils.get_from_resources(filename)
-    
-    def get_images_path_to(self, filename):
-        pics_folder = "F_PICS"
-        if (self._character.sex == 'M'):
-            pics_folder = "M_PICS"
-        image_file = os.path.join(pics_folder, filename)
-        return utils.GoogleUtils.get_from_resources(image_file)
-    
-    def _get_resources_path(self):
-        fable_dir = self._template['template_dir']
-        lang_code = self._language.language_code()
-        filepath = utils.GoogleUtils.get_from_relative_resources(fable_dir)
-        if (lang_code != "EN"):
-            filepath = utils.GoogleUtils.get_from_relative_resources(filepath, lang_code)
-        return utils.GoogleUtils.get_from_resources(filepath)
-    
-    def setContents(self, filecontents):
-        filecontents = self._replace_tags(filecontents)
-        self.paras = filecontents.split('\n')
+        filename = os.path.join(self._get_resources_path(), filename) 
+        return utils.GoogleUtils.get_from_google(filename)
         
+    def get_template(self):
+        return self._template_file
+    
+    def _read_file_template(self):
+        readOk = True
+        try:
+            template_googlepath = self.get_resources_path_to(self._template['template_text_file'])
+            logging.debug('Reading from ' + template_googlepath + '...')
+            fablefile = codecs.open(template_googlepath, "r", "utf-8")
+            self._fabletemplate = unicode(fablefile.read())
+            fablefile.close()
+            logging.debug('Reading file done.')
+        except:
+            readOk = False
+            logging.error('*** Error reading fable template...')
+            logging.error('*** %s', sys.exc_info())
+        return readOk
+    
 
-    
-    
-    
-    
-        
-
-        

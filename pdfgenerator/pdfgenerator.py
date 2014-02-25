@@ -6,7 +6,7 @@ main.py
 '''
 
 import pdfgenerator.loader as loader
-import pdfgenerator.character as character
+import character as character
 import os
 import sys
 import time
@@ -65,7 +65,7 @@ Example:
 if __name__ == '__main__':
     
     print """
-PDF Generator v.0.97
+PDF Generator v.0.98
 (C) 2013-2014 FableMe.com
     """
     
@@ -81,7 +81,7 @@ PDF Generator v.0.97
     if (validate_args(fable_id, tlang, tsex, tname, tbirth)):
         print '-- Running in %s' % os.getcwd()
         print '-- Generating Fable #%s...' % fable_id
-        character = character.Character(tname, tsex, tbirth)
+        character = character.PdfGeneratorCharacter(tname, tsex, tbirth)
         fabledoc = loader.SimpleLoader(fable_id, tlang, character)
         fabledoc.build()
         print '-- Done.'
