@@ -101,7 +101,8 @@ class SimpleLoader(object):
 
     def _replace_tags(self):
         template_text = self._fabletemplate
-        replacer = tagreplacer.Replacer(self._fabletemplate, self._character)
+        print '-- Raplacing tags in ' + self._language.language_code()
+        replacer = tagreplacer.Replacer(self._fabletemplate, self._character, self._language.language_code())
         replacements = replacer.get_replacements()
         for tag, val in replacements.items():
             if ((val != None) and (len(val)>0)):

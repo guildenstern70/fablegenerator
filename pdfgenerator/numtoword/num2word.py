@@ -13,13 +13,17 @@ class Num2Word(object):
         self._lang = language
     
     def create(self):
-        n2w = num2word_EN.Num2Word_EN()
-        if (self._lang == 'IT'):
+        n2w = None
+        if (self._lang == 'EN'):
+            n2w = num2word_EN.Num2Word_EN()
+        elif (self._lang == 'IT'):
             n2w = num2word_IT.Num2Word_IT()
         elif (self._lang == 'RO'):
             n2w = num2word_RO.Num2Word_RO()
         elif (self._lang == 'FR'):
             n2w = num2word_FR.Num2Word_FR()
+        else:
+            raise Exception("Unsupported language in Num2Word. Currently supported: EN, RO, IT, FR")
         return n2w
 
 
