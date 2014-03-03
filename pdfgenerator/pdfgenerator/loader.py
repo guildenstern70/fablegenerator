@@ -24,6 +24,7 @@ class SimpleLoader(object):
         
     def load_template(self):
         return self._readFile()
+    
     def build(self):
         if self._readFile():
             if len(self.paras) > 0:
@@ -48,6 +49,7 @@ class SimpleLoader(object):
                 saved = False
         except:
             saved = False
+            print('Error %s' % (str(sys.exc_info())))
         return saved
         
     def get_resources_path_to(self, filename):

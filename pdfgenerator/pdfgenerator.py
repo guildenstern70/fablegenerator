@@ -90,6 +90,8 @@ PDF Generator v.0.98
         try:
             if fabledoc.save():
                 print '-- PDF successfully saved'
+            else:
+                print '-- ERROR in writing file.'
         except IOError:
             print '** ERROR: Cannot write file. In use by another process?'
         print
