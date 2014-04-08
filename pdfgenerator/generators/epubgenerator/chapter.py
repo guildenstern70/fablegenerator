@@ -5,7 +5,7 @@ epubgenerator.chapter.py
 @author: Alessio Saltarin
 '''
 
-import pdfgenerator.chapter
+import generators.chapter
 
-class EPubChapter(pdfgenerator.chapter.FableChapter):
+class EPubChapter(generators.chapter.FableChapter):
     pass

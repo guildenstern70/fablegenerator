@@ -5,7 +5,7 @@ main.py
 @author: Alessio Saltarin
 '''
 
-import pdfgenerator.loader as loader
+import generators.pdfgenerator.loader as loader
 import character as character
 import os
 import sys

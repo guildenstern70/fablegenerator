@@ -10,7 +10,7 @@ import codecs
 import os.path
 import fablepage
 import fableme.db.booktemplates as fables
-import chapter
+from generators import chapter
 import tagreplacer
 import languages
 import fableme.utils as utils
