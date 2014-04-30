@@ -10,6 +10,7 @@ fablepage.py
 import logging
 import fabletemplate
 import stylesheet
+import generators.textformatter as textformatter
 
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Paragraph, Spacer, PageBreak, Image
@@ -33,7 +34,7 @@ def laterPages(canvas, doc):
     canvas.drawCentredString(_W/2, 40, '- %d -' % doc.page)
     canvas.restoreState()
 
-class FableDoc(object):
+class PdfFableDoc(textformatter.TextFormatter):
     
     def __init__(self, fabletitle, standalone):
         enc = pdfencrypt.StandardEncryption('', ownerPassword="alessio", canCopy=0, canModify=0)
