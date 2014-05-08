@@ -41,7 +41,7 @@ class Character(object):
         self.age = self.calculate_age(cbirthdate)
  
         
-class PdfGeneratorCharacter(Character):
+class GeneratorCharacter(Character):
           
     def get_age(self):
         age = -1

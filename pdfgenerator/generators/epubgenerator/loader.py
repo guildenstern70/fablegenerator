@@ -6,6 +6,7 @@ epubgenerator.loader.py
 '''
 
 import fablepage
+import os
 
 from generators import chapter, templateloader
 
@@ -17,7 +18,7 @@ class EPubLoader(templateloader.TemplateLoader):
     def build(self):
         if self._readFile():
             if len(self.paras) > 0:
-                self.fable_doc = fablepage.FableDoc(self._title, standalone=True)
+                self.fable_doc = fablepage.EPubFableDoc(self._title, standalone=True)
                 self._parseFile()
                 self._addCover()
                 self.fable_doc.addTitle(self._title)
@@ -27,4 +28,35 @@ class EPubLoader(templateloader.TemplateLoader):
                 print 'CRITICAL Loader Error: empty contents.'
                 raise
             self.fable_doc.build() 
+            
+    def _get_format(self):
+        return '.epub'
+    
+    #TODO
+    def get_images_path_to(self, filename):
+        pics_folder = "F_PICS"
+        if (self._character.sex == 'M'):
+            pics_folder = "M_PICS"
+        filepath_en = self._get_resources_path_lang()
+        images_path = os.path.join(filepath_en, pics_folder)
+        lang_code = self._language.language_code()
+        if (lang_code != "EN"):
+            finalpath_otherlang = os.path.normpath(os.path.join(filepath_en, lang_code))
+            fullfilepath = os.path.join(finalpath_otherlang, pics_folder)
+            path_to_file = os.path.join(fullfilepath, filename)
+            if (os.path.isfile(path_to_file)):
+                images_path = fullfilepath
+        return os.path.join(images_path, filename)
+            
+    def __get_fable(self):
+        return self.fable_doc
+    
+    def __get_epub_file(self):
+        return self._ebook_file
+    
+    def _replace_tags(self):
+        return self._fabletemplate
+            
+    fable = property(__get_fable, doc="""Get the fable document.""")
+    fable_file = property(__get_epub_file, doc="""Get fable ePUB file path.""")
         

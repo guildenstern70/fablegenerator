@@ -1,10 +1,21 @@
+""" 
+ 
+ PdfGenerator
+ 
+ templateloader.py
+ 
+"""
+
+
 from abc import abstractmethod
+from generators import languages, chapter
 
 import codecs
 import os.path
+import sys
 import fableme.db.booktemplates as fables
 import fableme.utils as utils
-import sys
+
 
 class TemplateLoader(object):
     """
@@ -37,6 +48,38 @@ class TemplateLoader(object):
     
     @abstractmethod
     def save(self):
+        return NotImplemented
+    
+    def _addCover(self):
+        unix_name = self._filename[:-4] + '.jpg'
+        cover_filepath = self.get_images_path_to(unix_name)
+        self.fable_doc.addCover(cover_filepath)
+    
+    def _addChapter(self, paragraphs):
+        new_chapter = chapter.FableChapter()
+        new_chapter.title = paragraphs[0]
+        for i in range(1,len(paragraphs)):
+            new_chapter.addParagraph(paragraphs[i])
+        self.chapters.append(new_chapter)
+
+    def _buildChapter(self, fable, chapter):
+        fable.addChapterTitle(chapter.title)
+        for paragraph in chapter.paragraphs:
+            fable.addParagraphOrImage(paragraph, self)
+        fable.addPageBreak()
+    
+    def _parseFile(self):
+        chapter_paragraphs = []
+        chapter_nr = 1
+        for paragraph in self.paras:
+            if (self._language.is_beginning_of_chapter(paragraph)):
+                if (len(chapter_paragraphs) > 0):
+                    self._addChapter(chapter_paragraphs)
+                    chapter_nr += 1
+                    chapter_paragraphs = []
+            chapter_paragraphs.append(paragraph)   
+    
+    def _get_format(self):
         return NotImplemented
     
     def _readFile(self):
@@ -79,12 +122,15 @@ class TemplateLoader(object):
         filepath_en = utils.BasicUtils.get_from_relative_resources(fable_dir)
         finalpath = os.path.normpath(filepath_en)
         return finalpath
+    
+    def _set_language(self, filename, lang):
+        return languages.Language(lang)
         
     def _set_variables(self, lang, character):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
-        self._pdffile = utils.BasicUtils.get_output_path(self._filename[:-4] + '_' + self._language.language_code() + '.pdf')
+        self._ebook_file = utils.BasicUtils.get_output_path(self._filename[:-4] + '_' + self._language.language_code() + self._get_format())
         self._title = self._template[self._language.get_title_key()]
         try:
             print '-- Creating fable = ' + self._title

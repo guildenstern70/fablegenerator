@@ -5,13 +5,13 @@ main.py
 @author: Alessio Saltarin
 '''
 
-import generators.pdfgenerator.loader as loader
+import generators.loaderfactory as loaderfactory
 import character as character
 import os
 import sys
 import time
 
-def validate_args(fid, lang, sex, name, birthdate):
+def validate_args(fid, ebook_format, lang, sex, name, birthdate):
     validate_ok = True
     try:
         fable_id = int(fid)
@@ -35,6 +35,9 @@ def validate_args(fid, lang, sex, name, birthdate):
     elif (len(birthdate) != 9):
         print 'Invalid birthdate. Must be 9 characters, ie: 26-Aug-80'
         validate_ok = False
+    elif (ebook_format != 'EPUB' and ebook_format != 'PDF'):
+        print 'Invalid format. It must be either PDF or EPUB'
+        validate_ok = False
         
     try:
         time.strptime(birthdate, "%d-%b-%y")
@@ -48,16 +51,17 @@ def help_me():
     print """        
 Usage:
 
-  pdfgenerator [fable_id] [language: EN, IT or RO] [sex: M or F] [name of the character] [birthdate]
+  pdfgenerator [fable_id] [format: PDF or EPUB] [language: EN, IT or RO] [sex: M or F] [name of the character] [birthdate]
   
   Fable IDs:
       0 - When I met the Pirates
       1 - My voyage to Aragon
       2 - The talisman of the Badia
 
-Example:
+Examples:
 
-  pdfgenerator 1 EN F Anna 30-nov-04
+  - pdfgenerator 1 PDF EN F Anna 30-nov-04
+  - pdfgenerator 2 EPUB IT M Andrea 26-aug-02
         
         """
     sys.exit(0)
@@ -65,31 +69,32 @@ Example:
 if __name__ == '__main__':
     
     print """
-PDF Generator v.0.98
+PDF Generator v.0.990
 (C) 2013-2014 FableMe.com
     """
     
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         help_me()
 
     fable_id = sys.argv[1]
-    tlang = sys.argv[2]
-    tsex = sys.argv[3]
-    tname = sys.argv[4]
-    tbirth = sys.argv[5]
+    ebook_format = sys.argv[2]
+    tlang = sys.argv[3]
+    tsex = sys.argv[4]
+    tname = sys.argv[5]
+    tbirth = sys.argv[6]
     
-    if (validate_args(fable_id, tlang, tsex, tname, tbirth)):
+    if (validate_args(fable_id, ebook_format, tlang, tsex, tname, tbirth)):
         print '-- Running in %s' % os.getcwd()
         print '-- Generating Fable #%s...' % fable_id
-        character = character.PdfGeneratorCharacter(tname, tsex, tbirth)
-        fabledoc = loader.SimpleLoader(fable_id, tlang, character)
+        character = character.GeneratorCharacter(tname, tsex, tbirth)
+        fabledoc = loaderfactory.LoaderFactory(ebook_format, fable_id, tlang, character, False)
         fabledoc.build()
         print '-- Done.'
-        print '-- Saving PDF to ' + fabledoc.fable_file
+        print '-- Saving eBook to ' + fabledoc.fable_file
         print '-- Please wait...'
         try:
             if fabledoc.save():
-                print '-- PDF successfully saved'
+                print '-- eBook successfully saved'
             else:
                 print '-- ERROR in writing file.'
         except IOError:

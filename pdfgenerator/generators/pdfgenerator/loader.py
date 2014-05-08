@@ -5,17 +5,17 @@ pdfgenerator.loader.py
 @author: Alessio Saltarin
 '''
 
+from generators import tagreplacer
+from generators import chapter, templateloader
+
 import sys
 import codecs
 import os.path
 import fablepage
-from generators import tagreplacer
-from generators import languages
 import fableme.utils as utils
 import logging
 
-from generators import chapter, templateloader
-        
+  
 class SimpleLoader(templateloader.TemplateLoader):
     
     def __init__(self, fable_id, lang, character):
@@ -39,7 +39,7 @@ class SimpleLoader(templateloader.TemplateLoader):
         saved = True
         try:
             if (self.fable_doc):
-                self.fable_doc.save(self._pdffile)
+                self.fable_doc.save(self._ebook_file)
             else:
                 print '*** ABORTING'
                 saved = False
@@ -62,9 +62,9 @@ class SimpleLoader(templateloader.TemplateLoader):
             if (os.path.isfile(path_to_file)):
                 images_path = fullfilepath
         return os.path.join(images_path, filename)
-               
-    def _set_language(self, filename, lang):
-        return languages.Language(lang)
+    
+    def _get_format(self):
+        return '.pdf'
 
     def _replace_tags(self):
         template_text = self._fabletemplate
@@ -76,41 +76,12 @@ class SimpleLoader(templateloader.TemplateLoader):
                 template_text = template_text.replace(tag, val)
         self.paras = template_text.split('\n')
         return template_text
-                
-    def _parseFile(self):
-        chapter_paragraphs = []
-        chapter_nr = 1
-        for paragraph in self.paras:
-            if (self._language.is_beginning_of_chapter(paragraph)):
-                if (len(chapter_paragraphs) > 0):
-                    self._addChapter(chapter_paragraphs)
-                    chapter_nr += 1
-                    chapter_paragraphs = []
-            chapter_paragraphs.append(paragraph)       
-        
-    def _addCover(self):
-        unix_name = self._filename[:-4] + '.jpg'
-        cover_filepath = self.get_images_path_to(unix_name)
-        self.fable_doc.addCover(cover_filepath)
-                
-    def _addChapter(self, paragraphs):
-        new_chapter = chapter.FableChapter()
-        new_chapter.title = paragraphs[0]
-        for i in range(1,len(paragraphs)):
-            new_chapter.addParagraph(paragraphs[i])
-        self.chapters.append(new_chapter)
-            
-    def _buildChapter(self, fable, chapter):
-        fable.addChapterTitle(chapter.title)
-        for paragraph in chapter.paragraphs:
-            fable.addParagraphOrImage(paragraph, self)
-        fable.addPageBreak()
-                
+                                                                
     def __get_fable(self):
         return self.fable_doc
     
     def __get_pdf_file(self):
-        return self._pdffile
+        return self._ebook_file
         
     fable = property(__get_fable, doc="""Get the fable document.""")
     fable_file = property(__get_pdf_file, doc="""Get fable PDF file path.""")
