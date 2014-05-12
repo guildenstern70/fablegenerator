@@ -46,16 +46,27 @@ class TemplateLoader(object):
     def build(self):
         return NotImplemented
     
-    @abstractmethod
     def save(self):
-        return NotImplemented
+        saved = True
+        try:
+            if (self.fable_doc):
+                self.fable_doc.save(self._ebook_file)
+            else:
+                print '*** ABORTING'
+                saved = False
+        except:
+            saved = False
+            print('Error %s' % (str(sys.exc_info())))
+        return saved 
     
     def _addCover(self):
+        print '-- _addCover'
         unix_name = self._filename[:-4] + '.jpg'
         cover_filepath = self.get_images_path_to(unix_name)
         self.fable_doc.addCover(cover_filepath)
     
     def _addChapter(self, paragraphs):
+        print '-- _addChapter'
         new_chapter = chapter.FableChapter()
         new_chapter.title = paragraphs[0]
         for i in range(1,len(paragraphs)):
@@ -63,6 +74,7 @@ class TemplateLoader(object):
         self.chapters.append(new_chapter)
 
     def _buildChapter(self, fable, chapter):
+        print '-- _buildChapter'
         fable.addChapterTitle(chapter.title)
         for paragraph in chapter.paragraphs:
             fable.addParagraphOrImage(paragraph, self)

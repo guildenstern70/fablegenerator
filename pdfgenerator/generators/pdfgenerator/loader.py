@@ -34,20 +34,7 @@ class SimpleLoader(templateloader.TemplateLoader):
                 print 'CRITICAL Loader Error: empty contents.'
                 raise
             self.fable_doc.build() 
-        
-    def save(self):
-        saved = True
-        try:
-            if (self.fable_doc):
-                self.fable_doc.save(self._ebook_file)
-            else:
-                print '*** ABORTING'
-                saved = False
-        except:
-            saved = False
-            print('Error %s' % (str(sys.exc_info())))
-        return saved 
-        
+                
     def get_images_path_to(self, filename):
         pics_folder = "F_PICS"
         if (self._character.sex == 'M'):
