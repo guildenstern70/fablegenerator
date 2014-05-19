@@ -22,7 +22,7 @@ class SimpleLoader(templateloader.TemplateLoader):
         super(SimpleLoader, self).__init__(fable_id, lang, character)
     
     def build(self):
-        if self._readFile():
+        if self._buildFableFromFile():
             if len(self.paras) > 0:
                 self.fable_doc = fablepage.PdfFableDoc(self._title, standalone=True)
                 self._parseFile()

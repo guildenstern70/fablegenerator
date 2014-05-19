@@ -94,7 +94,7 @@ class TemplateLoader(object):
     def _get_format(self):
         return NotImplemented
     
-    def _readFile(self):
+    def _buildFableFromFile(self):
         """
             1) Reads the file from _filename
             2) Replaces tags based on variables passed
@@ -104,20 +104,27 @@ class TemplateLoader(object):
         """
         fileReadOk = True
         fileFullPath = self._get_resources_path_to(self._filename)
-        print '-- Reading file ' + fileFullPath
-        try:
-            fileobj = codecs.open(fileFullPath, "r", "utf-8")
-            self._fabletemplate = unicode(fileobj.read())
+        self._fabletemplate = self._readGenericTextFile(fileFullPath)
+        if len(self._fabletemplate) > 0:
             filecontents = self._replace_tags()
-            fileobj.close()
             self.paras = filecontents.split('\n')
             print '-- The file has ' + str(len(self.paras)) + ' paragraphs.'
-        except IOError:
-            print '*** Critical error opening %s' % fileFullPath
-            print '*** ', sys.exc_info()
+        else:
             fileReadOk = False
-        return fileReadOk
+        return fileReadOk        
     
+    def _readGenericTextFile(self, filePath):
+        filecontents = ""
+        print '-- Reading file ' + filePath
+        try:
+            fileobj = codecs.open(filePath, "r", "utf-8")
+            filecontents = unicode(fileobj.read())
+            fileobj.close()
+        except IOError:
+            print '*** Critical error opening %s' % filePath
+            print '*** ', sys.exc_info()
+        return filecontents
+            
     def _get_resources_path(self):
         fable_dir = self._template['template_dir']
         lang_code = self._language.language_code()
