@@ -8,6 +8,7 @@
 
 
 from abc import abstractmethod
+from generators import tagreplacer
 from generators import languages, chapter
 
 import codecs
@@ -89,7 +90,18 @@ class TemplateLoader(object):
                     self._addChapter(chapter_paragraphs)
                     chapter_nr += 1
                     chapter_paragraphs = []
-            chapter_paragraphs.append(paragraph)   
+            chapter_paragraphs.append(paragraph)  
+            
+    def _replace_tags(self):
+        template_text = self._fabletemplate
+        print '-- Raplacing tags in ' + self._language.language_code()
+        replacer = tagreplacer.Replacer(self._fabletemplate, self._character, self._language.language_code())
+        replacements = replacer.get_replacements()
+        for tag, val in replacements.items():
+            if ((val != None) and (len(val)>0)):
+                template_text = template_text.replace(tag, val)
+        self.paras = template_text.split('\n')
+        return template_text 
     
     def _get_format(self):
         return NotImplemented

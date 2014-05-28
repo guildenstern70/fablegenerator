@@ -5,7 +5,6 @@ pdfgenerator.loader.py
 @author: Alessio Saltarin
 '''
 
-from generators import tagreplacer
 from generators import chapter, templateloader
 
 import sys
@@ -52,17 +51,6 @@ class SimpleLoader(templateloader.TemplateLoader):
     
     def _get_format(self):
         return '.pdf'
-
-    def _replace_tags(self):
-        template_text = self._fabletemplate
-        print '-- Raplacing tags in ' + self._language.language_code()
-        replacer = tagreplacer.Replacer(self._fabletemplate, self._character, self._language.language_code())
-        replacements = replacer.get_replacements()
-        for tag, val in replacements.items():
-            if ((val != None) and (len(val)>0)):
-                template_text = template_text.replace(tag, val)
-        self.paras = template_text.split('\n')
-        return template_text
                                                                 
     def __get_fable(self):
         return self.fable_doc

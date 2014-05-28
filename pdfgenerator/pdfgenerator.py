@@ -10,6 +10,7 @@ import character as character
 import os
 import sys
 import time
+import logging
 
 def validate_args(fid, ebook_format, lang, sex, name, birthdate):
     validate_ok = True
@@ -82,6 +83,8 @@ PDF Generator v.0.990
     tsex = sys.argv[4]
     tname = sys.argv[5]
     tbirth = sys.argv[6]
+    
+    logging.getLogger().setLevel(logging.DEBUG)  
     
     if (validate_args(fable_id, ebook_format, tlang, tsex, tname, tbirth)):
         print '-- Running in %s' % os.getcwd()

@@ -7,6 +7,7 @@ epubgenerator.loader.py
 
 import fablepage
 import os
+import logging
 
 from generators import chapter, templateloader
 
@@ -19,7 +20,7 @@ class EPubLoader(templateloader.TemplateLoader):
         if self._buildFableFromFile():
             if len(self.paras) > 0:
                 self.fable_doc = fablepage.EPubFableDoc(self._title, standalone=True)
-                self.fable_doc.setInitialXHTML(self._language.get_ISO())
+                self.fable_doc.initialize(self._language.get_ISO())
                 self._parseFile()
                 self._addCover()
                 self.fable_doc.addTitle(self._title)
@@ -55,7 +56,13 @@ class EPubLoader(templateloader.TemplateLoader):
         return self._ebook_file
     
     def _replace_tags(self):
-        return self._fabletemplate
+        template_text = super(EPubLoader, self)._replace_tags()
+        template_text = template_text.replace('<para alignment="center" fontsize="16">',
+                                              '<span class="fableme1 fablemecenter">')
+        template_text = template_text.replace('<para alignment="right" fontsize="16">',
+                                              '<span class="fableme1 fablemeright">')
+        template_text = template_text.replace('</para>', '</span>')
+        return template_text 
             
     fable = property(__get_fable, doc="""Get the fable document.""")
     fable_file = property(__get_epub_file, doc="""Get fable ePUB file path.""")
