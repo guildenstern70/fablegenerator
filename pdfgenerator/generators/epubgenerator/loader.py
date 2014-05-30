@@ -7,7 +7,6 @@ epubgenerator.loader.py
 
 import fablepage
 import os
-import logging
 
 from generators import chapter, templateloader
 
