@@ -78,11 +78,14 @@ class PdfFableDoc(textformatter.TextFormatter):
             logging.critical('Cannot parse image descriptor: ' + imageTextDescription)
         return image
         
-    def addTitle(self, text):
+    def addTitle(self, text, dedication):
         p = Paragraph(text, self._styles["Title"])
         self._story.append(Spacer(1, 1.2*cm))
         self._story.append(p)
         self._story.append(Spacer(1, 2.2*cm))
+        dedic = Paragraph(dedication, self._styles['Chapter'])
+        self._story.append(Spacer(1, 1.2*cm))
+        self._story.append(dedic)
         
     def addChapterTitle(self, chapter_title):
         p = Paragraph(chapter_title, self._styles['Chapter'])

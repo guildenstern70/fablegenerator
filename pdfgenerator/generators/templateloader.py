@@ -33,7 +33,7 @@ class TemplateLoader(object):
             template.save()
     
     """
-    def __init__(self, fable_id, lang, character):
+    def __init__(self, fable_id, lang, character, dedication):
         """
         Initialize the template loader
         - fable_id: Fable id
@@ -41,7 +41,7 @@ class TemplateLoader(object):
         - character: A character as in fableme/db/character.py
         """
         self._fable_id = fable_id
-        self._set_variables(lang, character)
+        self._set_variables(lang, character, dedication)
     
     @abstractmethod
     def build(self):
@@ -157,10 +157,11 @@ class TemplateLoader(object):
     def _set_language(self, filename, lang):
         return languages.Language(lang)
         
-    def _set_variables(self, lang, character):
+    def _set_variables(self, lang, character, dedication):
         self._language = self._set_language(self._fable_id, lang)
         self._template = fables.get_book_template(self._fable_id)
         self._filename = self._template['template_text_file']
+        self._dedication = dedication
         self._ebook_file = utils.BasicUtils.get_output_path(self._filename[:-4] + '_' + self._language.language_code() + self._get_format())
         self._title = self._template[self._language.get_title_key()]
         try:

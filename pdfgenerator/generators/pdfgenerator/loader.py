@@ -17,8 +17,8 @@ import logging
   
 class SimpleLoader(templateloader.TemplateLoader):
     
-    def __init__(self, fable_id, lang, character):
-        super(SimpleLoader, self).__init__(fable_id, lang, character)
+    def __init__(self, fable_id, lang, character, dedication):
+        super(SimpleLoader, self).__init__(fable_id, lang, character, dedication)
     
     def build(self):
         if self._buildFableFromFile():
@@ -26,7 +26,7 @@ class SimpleLoader(templateloader.TemplateLoader):
                 self.fable_doc = fablepage.PdfFableDoc(self._title, standalone=True)
                 self._parseFile()
                 self._addCover()
-                self.fable_doc.addTitle(self._title)
+                self.fable_doc.addTitle(self._title, self._dedication)
                 for chapter in self.chapters:
                     self._buildChapter(self.fable_doc, chapter)
             else:

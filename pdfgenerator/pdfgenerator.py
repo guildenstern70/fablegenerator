@@ -6,7 +6,6 @@ main.py
 '''
 
 import generators.loaderfactory as loaderfactory
-import character
 import os
 import sys
 import configuration
@@ -14,15 +13,9 @@ import logging
 
 def run(config):
     fable_id = config.fable_id
-    ebook_format = config.ebook_format
-    tlang = config.lang
-    tsex = config.sex
-    tname = config.name
-    tbirth = config.birthdate
     print '-- Running in %s' % os.getcwd()
     print '-- Generating Fable #%s...' % fable_id
-    fable_character = character.GeneratorCharacter(tname, tsex, tbirth)
-    fabledoc = loaderfactory.LoaderFactory(ebook_format, fable_id, tlang, fable_character, False)
+    fabledoc = loaderfactory.LoaderFactory(config, False)
     fabledoc.build()
     print '-- Done.'
     print '-- Saving eBook to ' + fabledoc.fable_file
@@ -48,14 +41,13 @@ Usage:
 Examples of configuration file:
 
   [eBook]
-  fable_id: 0           ; 0 - When I met the Pirates
-                        ; 1 - My voyage to Aragon
-                        ; 2 - The talisman of the Badia
+  fable_id: 0           ; 0,1,2
   format: EPUB          ; PDF or EPUB
   language: EN          ; EN, IT or RO 
   sex: M                ; M or F
   name: Pippo           ; name of the character
   birthdate: 26-aug-02  ; birthdate
+  dedication: to John   ; dedication
         
         """
     

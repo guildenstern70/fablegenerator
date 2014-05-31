@@ -67,15 +67,19 @@ class EPubFableDoc(textformatter.TextFormatter):
             logging.critical('Cannot parse image descriptor: ' + imageTextDescription)
         return imageFileName[0]
     
-    def addTitle(self, text):
-        _template = """<p class="fableme1">{title}</p>"""
+    def addTitle(self, text, dedication):
+        _template = """<p class="fableme1">&#160;</p><p class="fableme4 fablemecenter">FableMe.com</p>
+        <div class="booktitle">{title}</div><p class="fableme1">&#160;</p>
+        <p class="fableme1">&#160;</p><p class="fableme1">&#160;</p>
+        <p class="fableme4 fablemecenter">{dedication}</p>"""
         _template = _template.replace('{title}', text)
+        _template = _template.replace('{dedication}', dedication)
         _template += PAGE_BREAK
         self._index = self._index.replace('{title}', text)
         self._story += _template
     
     def addChapterTitle(self, chapter_title):
-        _template = """<p class="fableme1"><i class="fableme4">{chaptertitle}</i></p>"""
+        _template = """<div class="chaptertitle"><p class="fableme1">&#160;</p><i class="fableme4">{chaptertitle}</i></div>"""
         _template = _template.replace('{chaptertitle}', chapter_title)
         _template += """<p class="fableme1">&#160;</p>"""
         self._story += _template
@@ -88,7 +92,9 @@ class EPubFableDoc(textformatter.TextFormatter):
             self._id_counter += 1
             idname = 'id' + str(self._id_counter)
             imageName = self.prepareImageFromText(text, loader)    
-            _template = """<p class="fableme1"><img src="{image_src}" alt="Image" class="fableme2"/></p>"""
+            _template = """<div style="float: left; margin=5pt;">
+            <img alt="Image" width="450" src="{image_src}"/>
+            </div>"""
             _template = _template.replace('{image_src}', imageName)
             _index = """<item href="{imagefilename}" id="{imgid}" media-type="image/jpeg"/>"""
             _index = _index.replace('{imagefilename}', imageName)
@@ -103,8 +109,7 @@ class EPubFableDoc(textformatter.TextFormatter):
             logging.critical('*Warning: image is None!')
             
     def closeXHTML(self):
-        self._story += """<p class="fableme1"><i class="fableme4">The End</i></p>
-                          <p class="fableme1">&#160;</p></body></html>"""
+        self._story += """</body></html>"""
         self._index += epubheaders.EPUB_INDEX_FOOTER
         
     def build(self):
