@@ -1,5 +1,5 @@
 '''
-PDFGenerator
+FableGenerator
 epubgenerator.fablepage.py
 
 @author: Alessio Saltarin

@@ -1,5 +1,5 @@
 '''
-PDFGenerator
+FableGenerator
 epubgenerator.epubheaders.py
 
 @author: Alessio Saltarin
@@ -9,7 +9,7 @@ EPUB_XHTML_HEADER = """<?xml version='1.0' encoding='utf-8'?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{iso_lang}" xml:lang="{iso_lang}">
 <head>
     <title>{title}</title>
-    <meta name="generator" content="pdfgenerator_py"/>
+    <meta name="generator" content="FableGenerator"/>
     <meta name="author" content="FableMe.com"/>
     <meta name="keywords" content=""/>
     <meta name="date" content="2013-11-26T16:22:35+00:00"/>

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 '''
-PDFGenerator
+FableGenerator
 fablepage.py
 
 @author: Alessio Saltarin

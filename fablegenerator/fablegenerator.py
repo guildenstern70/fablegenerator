@@ -1,5 +1,5 @@
 '''
-PDFGenerator
+FableGenerator
 main.py
 
 @author: Alessio Saltarin
@@ -9,6 +9,8 @@ import generators.loaderfactory as loaderfactory
 import os
 import sys
 import configuration
+
+VERSION = "1.02"
 
 def run(config):
     fable_id = config.fable_id
@@ -33,7 +35,7 @@ def help_me():
     print """        
 Usage:
 
-  pdfgenerator [configuration_file] 
+  fablegenerator [configuration_file] 
   
   [configuration_file] = Full path to configuration file
 
@@ -53,7 +55,7 @@ Examples of configuration file:
 if __name__ == '__main__':
     
     print """
-PDF Generator v.1.01
+FableGenerator """+VERSION+"""
 (C) 2013-2014 FableMe.com
     """
     

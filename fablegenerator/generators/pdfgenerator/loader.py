@@ -1,6 +1,6 @@
 '''
-PDFGenerator
-pdfgenerator.loader.py
+FableGenerator
+fablegenerator.loader.py
 
 @author: Alessio Saltarin
 '''

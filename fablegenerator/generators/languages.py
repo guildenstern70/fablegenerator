@@ -1,5 +1,5 @@
 '''
-PDFGenerator
+FableGenerator
 languages.py
 
 @author: Alessio Saltarin

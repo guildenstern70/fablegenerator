@@ -1,6 +1,6 @@
 """ 
  
- PdfGenerator
+ FableGenerator
  
  tagreplacer.py
  

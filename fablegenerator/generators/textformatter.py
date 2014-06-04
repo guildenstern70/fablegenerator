@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 '''
-PDFGenerator
+FableGenerator
 generators.textformatter.py
 
 @author: Alessio Saltarin
