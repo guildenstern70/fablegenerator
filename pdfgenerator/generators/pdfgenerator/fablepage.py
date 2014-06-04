@@ -79,13 +79,17 @@ class PdfFableDoc(textformatter.TextFormatter):
         return image
         
     def addTitle(self, text, dedication):
+        self._story.append(Spacer(1, 1.2*cm))
+        self._story.append(Spacer(1, 1.2*cm))
         p = Paragraph(text, self._styles["Title"])
         self._story.append(Spacer(1, 1.2*cm))
         self._story.append(p)
         self._story.append(Spacer(1, 2.2*cm))
-        dedic = Paragraph(dedication, self._styles['Chapter'])
+        for dedicLine in dedication.split('***'):
+            dedicPar = Paragraph(dedicLine, self._styles['Dedication'])
+            self._story.append(dedicPar)
         self._story.append(Spacer(1, 1.2*cm))
-        self._story.append(dedic)
+        self._story.append(PageBreak())
         
     def addChapterTitle(self, chapter_title):
         p = Paragraph(chapter_title, self._styles['Chapter'])

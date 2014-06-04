@@ -9,7 +9,6 @@ import generators.loaderfactory as loaderfactory
 import os
 import sys
 import configuration
-import logging
 
 def run(config):
     fable_id = config.fable_id
@@ -62,7 +61,7 @@ PDF Generator v.1.01
         help_me()
         sys.exit(0)
         
-    logging.getLogger().setLevel(logging.DEBUG)  
+    #logging.getLogger().setLevel(logging.DEBUG)  
     config = configuration.Configuration()
     
     if not config.read(sys.argv[1]):

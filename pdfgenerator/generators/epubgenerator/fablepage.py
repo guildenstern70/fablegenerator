@@ -73,7 +73,11 @@ class EPubFableDoc(textformatter.TextFormatter):
         <p class="fableme1">&#160;</p><p class="fableme1">&#160;</p>
         <p class="fableme4 fablemecenter">{dedication}</p>"""
         _template = _template.replace('{title}', text)
-        _template = _template.replace('{dedication}', dedication)
+        dedicPar = ""
+        for dedicLine in dedication.split('***'):
+            dedicPar += dedicLine
+            dedicPar += "<br/>"
+        _template = _template.replace('{dedication}', dedicPar)
         _template += PAGE_BREAK
         self._index = self._index.replace('{title}', text)
         self._story += _template
@@ -92,8 +96,8 @@ class EPubFableDoc(textformatter.TextFormatter):
             self._id_counter += 1
             idname = 'id' + str(self._id_counter)
             imageName = self.prepareImageFromText(text, loader)    
-            _template = """<div style="float: left; margin=5pt;">
-            <img alt="Image" width="450" src="{image_src}"/>
+            _template = """<div class="fableimage">
+            <img alt="Image" src="{image_src}"/>
             </div>"""
             _template = _template.replace('{image_src}', imageName)
             _index = """<item href="{imagefilename}" id="{imgid}" media-type="image/jpeg"/>"""

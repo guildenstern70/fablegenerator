@@ -56,6 +56,8 @@ class EPubLoader(templateloader.TemplateLoader):
     
     def _replace_tags(self):
         template_text = super(EPubLoader, self)._replace_tags()
+        template_text = template_text.replace('<para alignment="left" fontsize="16">',
+                                              '<span class="fableme1">')
         template_text = template_text.replace('<para alignment="center" fontsize="16">',
                                               '<span class="fableme1 fablemecenter">')
         template_text = template_text.replace('<para alignment="right" fontsize="16">',
