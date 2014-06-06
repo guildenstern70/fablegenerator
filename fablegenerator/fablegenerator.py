@@ -10,7 +10,7 @@ import os
 import sys
 import configuration
 
-VERSION = "1.02"
+VERSION = "1.03"
 
 def run(config):
     fable_id = config.fable_id
