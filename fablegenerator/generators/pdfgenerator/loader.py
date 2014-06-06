@@ -69,8 +69,12 @@ class GoogleLoader(SimpleLoader):
         fable_template_id = dbfable.template_id
         lang = dbfable.language
         character = dbfable.character
-        return cls(fable_template_id, lang, character)       
+        return cls(fable_template_id, lang, character)  
     
+    def load_template(self): # DO NOT REMOVE!
+        self._read_file_template()
+        return self._replace_tags()
+     
     def build(self):
         if len(self.paras) > 0:
             self.fable_doc = fablepage.PdfFableDoc(self._title, standalone=False)

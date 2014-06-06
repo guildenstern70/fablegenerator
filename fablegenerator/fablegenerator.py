@@ -9,8 +9,9 @@ import generators.loaderfactory as loaderfactory
 import os
 import sys
 import configuration
+import logging
 
-VERSION = "1.03"
+VERSION = "1.04"
 
 def run(config):
     fable_id = config.fable_id
@@ -63,7 +64,7 @@ FableGenerator """+VERSION+"""
         help_me()
         sys.exit(0)
         
-    #logging.getLogger().setLevel(logging.DEBUG)  
+    logging.getLogger().setLevel(logging.WARN)  
     config = configuration.Configuration()
     
     if not config.read(sys.argv[1]):
