@@ -1,4 +1,6 @@
-pdfgenerator
-============
+fablegenerator
+==============
 
-A stylesheed based PDF generator
+A stylesheed based ebook (PDF, ePUB) generator
+
+
