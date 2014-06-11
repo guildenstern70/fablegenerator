@@ -50,7 +50,7 @@ class EPubFableDoc(textformatter.TextFormatter):
         self._index += '   <item href="'
         self._index += baseFileName
         self._index += '" id="cover" media-type="image/jpeg"/>'
-        self._titlepage = self._titlepage.replace('********', coverImageFile)
+        self._titlepage = self._titlepage.replace('********', baseFileName)
     
     def prepareImageFromText(self, imageTextDescription, loader):
         imageFileName = None
