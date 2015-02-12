@@ -8,7 +8,7 @@ chapter.py
 class FableChapter():
     
     def __init__(self):
-        self._chapter_title = ""
+        self._chapter_title = u""
         self._chapter_paragraphs = []
         
     def addParagraph(self, text):

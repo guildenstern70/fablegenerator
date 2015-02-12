@@ -86,11 +86,23 @@ class Replacer(object):
         to_card = n2w.to_cardinal
         to_ord = n2w.to_ordinal
         
+        if self.character_age > 0:
+            str_age = to_card(self.character_age) 
+            str_age_ord = to_ord(self.character_age)
+            str_age_plus = to_card(self.character_age+1)
+            str_age_plus_ord = to_ord(self.character_age+1)
+        else:
+            str_age = None
+            str_age_ord = None
+            str_age_plus = None
+            str_age_plus_ord = None
+            
+        
         return {
             'name': self.character_name,
-            'age': to_card(self.character_age),
-            'ageord': to_ord(self.character_age),
-            'ageplus': to_card(self.character_age+1),
-            'ageplusord': to_ord(self.character_age+1)
+            'age': str_age,
+            'ageord': str_age_ord,
+            'ageplus': str_age_plus,
+            'ageplusord': str_age_plus_ord
             }.get(elem, elem)    # 9 is default if x not found
     

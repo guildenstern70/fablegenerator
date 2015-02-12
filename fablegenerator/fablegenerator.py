@@ -11,7 +11,7 @@ import sys
 import configuration
 import logging
 
-VERSION = "1.04"
+VERSION = "1.05"
 
 def run(config):
     fable_id = config.fable_id
@@ -43,7 +43,7 @@ Usage:
 Examples of configuration file:
 
   [eBook]
-  fable_id: 0           ; 0,1,2
+  fable_id: 0           ; 0,1,2,3,4,5
   format: EPUB          ; PDF or EPUB
   language: EN          ; EN, IT or RO 
   sex: M                ; M or F
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     
     print """
 FableGenerator """+VERSION+"""
-(C) 2013-2014 FableMe.com
+(C) 2013-2015 FableMe.com
     """
     
     if len(sys.argv) != 2:

@@ -123,7 +123,7 @@ class TemplateLoader(object):
         return fileReadOk        
     
     def _readGenericTextFile(self, filePath):
-        filecontents = ""
+        filecontents = u""
         print '-- Reading file ' + filePath
         try:
             fileobj = codecs.open(filePath, "r", "utf-8")

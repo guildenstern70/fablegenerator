@@ -45,13 +45,14 @@ class GeneratorCharacter(Character):
           
     def get_age(self):
         age = -1
-        try:
-            birth_date = time.strptime(self.birthdate, "%d-%b-%y")
-            birth_datetime = datetime.date.fromtimestamp(time.mktime(birth_date))
-            age = self.calculate_age(birth_datetime)
-        except:
-            print sys.exc_info()
-            print
+        if self.birthdate is not None:
+            try:
+                birth_date = time.strptime(self.birthdate, "%d-%b-%y")
+                birth_datetime = datetime.date.fromtimestamp(time.mktime(birth_date))
+                age = self.calculate_age(birth_datetime)
+            except:
+                print sys.exc_info()
+                print
         return age
     
     def __init__(self, cname, csex, cbirthdate):

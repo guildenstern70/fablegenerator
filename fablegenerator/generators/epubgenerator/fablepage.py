@@ -23,7 +23,7 @@ PAGE_BREAK = "<div style='page-break-before:always;'></div>"
 class EPubFableDoc(textformatter.TextFormatter):
     
     def __init__(self, fabletitle, standalone):
-        self._story = ""
+        self._story = u''
         self._index = ""
         self._titlepage = ""
         self._id_counter = 1
@@ -65,12 +65,12 @@ class EPubFableDoc(textformatter.TextFormatter):
         return imageFileName[0]
     
     def addTitle(self, text, dedication):
-        _template = """<p class="fableme1">&#160;</p><p class="fableme4 fablemecenter">FableMe.com</p>
+        _template = u"""<p class="fableme1">&#160;</p><p class="fableme4 fablemecenter">FableMe.com</p>
         <div class="booktitle">{title}</div><p class="fableme1">&#160;</p>
         <p class="fableme1">&#160;</p><p class="fableme1">&#160;</p>
         <p class="fableme4 fablemecenter">{dedication}</p>"""
-        _template = _template.replace('{title}', text)
-        dedicPar = ""
+        _template = _template.replace('{title}', unicode(text))
+        dedicPar = u""
         for dedicLine in dedication.split('***'):
             dedicPar += dedicLine
             dedicPar += "<br/>"
@@ -83,7 +83,7 @@ class EPubFableDoc(textformatter.TextFormatter):
         _template = """<div class="chaptertitle"><p class="fableme1">&#160;</p><i class="fableme4">{chaptertitle}</i></div>"""
         _template = _template.replace('{chaptertitle}', chapter_title)
         _template += """<p class="fableme1">&#160;</p>"""
-        self._story += _template
+        self._story.join(_template)
     
     def addPageBreak(self):
         self._story += PAGE_BREAK
