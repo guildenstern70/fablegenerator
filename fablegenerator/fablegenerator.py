@@ -1,9 +1,9 @@
-'''
+"""
 FableGenerator
 main.py
 
 @author: Alessio Saltarin
-'''
+"""
 
 import generators.loaderfactory as loaderfactory
 import os
@@ -73,7 +73,3 @@ FableGenerator """+VERSION+"""
         sys.exit(0)
     else:
         run(config)
-        
-
-       
-    

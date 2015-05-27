@@ -53,22 +53,22 @@ class Configuration(object):
         except:
             print 'Invalid fable id %s' % self.fable_id
             return False
-        if (fable_id <0 or fable_id > 5):
+        if fable_id <0 or fable_id > 8:
             print 'Invalid fable id %s' % self.fable_id
-            print 'Valid choices are: 0-1-2-3-4-5' 
+            print 'Valid choices are: 0-1-2-3-4-5-6-7-8'
             print
             validate_ok = False
-        elif (self.lang != 'EN' and self.lang != 'IT' and self.lang != 'RO'):
+        elif self.lang != 'EN' and self.lang != 'IT' and self.lang != 'RO':
             print 'Unknown lang %s' % self.lang
             validate_ok = False
-        elif (self.sex != 'M' and self.sex != 'F'):
+        elif self.sex != 'M' and self.sex != 'F':
             print 'Invalid sex param. Valid choices are M or F.'
             validate_ok = False
-        elif (self.name is None or len(self.name)<=1):
+        elif self.name is None or len(self.name)<=1:
             print 'Invalid name.'
             validate_ok = False
-        elif (self.birthdate is not None):
-            if (len(self.birthdate) != 9):
+        elif self.birthdate is not None:
+            if len(self.birthdate) != 9:
                 print 'Invalid birthdate. Must be 9 characters, ie: 26-Aug-80'
                 validate_ok = False
             try:
@@ -76,9 +76,7 @@ class Configuration(object):
             except:
                 print 'Cannot parse birthdate. Invalid format? Must be dd-mmm-yy'
                 validate_ok = False
-        elif (self.ebook_format != 'EPUB' and self.ebook_format != 'PDF'):
+        elif self.ebook_format != 'EPUB' and self.ebook_format != 'PDF':
             print 'Invalid format. It must be either PDF or EPUB'
             validate_ok = False
         return validate_ok
-    
-        

@@ -27,7 +27,7 @@ class EPubFableDoc(textformatter.TextFormatter):
         self._index = ""
         self._titlepage = ""
         self._id_counter = 1
-        self._language = "en-US";
+        self._language = "en-US"
         self._title = fabletitle
         self._init_epubfiles()
         
@@ -152,8 +152,3 @@ class EPubFableDoc(textformatter.TextFormatter):
     def _setInitialIndex(self, language):
         self._index = epubheaders.EPUB_INDEX_HEADER
         self._index = self._index.replace('{language}', language)
-        
-        
-            
-    
-    
