@@ -21,7 +21,3 @@ def LoaderFactory(config, use_google = False):
     else: # EPUB
         loader = epub_loader.EPubLoader(config.fable_id, config.lang, fable_character, config.dedication)
     return loader
-
-
-        
-    

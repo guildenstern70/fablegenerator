@@ -1,9 +1,9 @@
-'''
+"""
 FableGenerator
 epubgenerator.fablepage.py
 
 @author: Alessio Saltarin
-'''
+"""
 
 import os
 import sys
@@ -20,8 +20,12 @@ EPUB_PROTO_FILE = "index_prototype.html"
 EPUB_INDEX_FILE = "content.opf"
 PAGE_BREAK = "<div style='page-break-before:always;'></div>"
 
+
 class EPubFableDoc(textformatter.TextFormatter):
     
+    def getImageFromText(self, imageTextDescription, loader):
+        pass
+
     def __init__(self, fabletitle, standalone):
         self._story = u''
         self._index = ""
@@ -80,16 +84,18 @@ class EPubFableDoc(textformatter.TextFormatter):
         self._story += _template
     
     def addChapterTitle(self, chapter_title):
-        _template = """<div class="chaptertitle"><p class="fableme1">&#160;</p><i class="fableme4">{chaptertitle}</i></div>"""
-        _template = _template.replace('{chaptertitle}', chapter_title)
-        _template += """<p class="fableme1">&#160;</p>"""
-        self._story.join(_template)
+        _template = u"""<div class="chaptertitle">
+                          <p class="fableme1">&#160;</p>
+                          <i class="fableme4">{chaptertitle}</i></div>"""
+        _template = _template.replace('{chaptertitle}', unicode(chapter_title))
+        _template += u"""<p class="fableme1">&#160;</p>"""
+        self._story += _template
     
     def addPageBreak(self):
         self._story += PAGE_BREAK
     
     def addParagraphOrImage(self, text, loader):
-        if (text.startswith('**IMG')):
+        if text.startswith('**IMG'):
             self._id_counter += 1
             idname = 'id' + str(self._id_counter)
             imageName = self.prepareImageFromText(text, loader)    

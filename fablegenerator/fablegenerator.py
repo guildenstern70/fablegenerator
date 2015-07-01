@@ -13,11 +13,11 @@ import logging
 
 VERSION = "1.05"
 
-def run(config):
-    fable_id = config.fable_id
+def run(xconfig):
+    fable_id = xconfig.fable_id
     print '-- Running in %s' % os.getcwd()
     print '-- Generating Fable #%s...' % fable_id
-    fabledoc = loaderfactory.LoaderFactory(config, False)
+    fabledoc = loaderfactory.LoaderFactory(xconfig, False)
     fabledoc.build()
     print '-- Done.'
     print '-- Saving eBook to ' + fabledoc.fable_file
