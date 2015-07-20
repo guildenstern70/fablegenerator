@@ -1,11 +1,11 @@
-'''
+"""
 FableGenerator
 chapter.py
 
 @author: Alessio Saltarin
-'''
+"""
 
-class FableChapter():
+class FableChapter:
     
     def __init__(self):
         self._chapter_title = u""
@@ -24,6 +24,6 @@ class FableChapter():
         return self._chapter_paragraphs
         
     title = property(___get_title, ___set_title,
-                         doc="""Gets or sets the title.""")
+                     doc="""Gets or sets the title.""")
     
     paragraphs = property(___get_paras, doc="""Gets paragraphs.""")
